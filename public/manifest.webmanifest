@@ -1,0 +1,14 @@
+{
+  "name": "Buy Helper — 古着買い付け電卓",
+  "short_name": "Buy Helper",
+  "description": "アメリカ古着買い付けバイヤーのための、3秒判定ツール。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a1f",
+  "theme_color": "#1a1a1f",
+  "icons": [
+    { "src": "/BuyHelper.jpg", "sizes": "any", "type": "image/x-icon" }
+  ]
+}
