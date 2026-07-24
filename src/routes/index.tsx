@@ -97,23 +97,28 @@ function BuyHelper() {
         <section className="mb-5">
           <Label>USD価格</Label>
           <div className="relative">
-            <span className="absolute left-5 top-1/2 -translate-y-1/2 text-2xl font-bold text-muted-foreground num">$</span>
-            <input
-              inputMode="decimal"
-              type="number"
-              step="0.01"
-              value={usdInput}
-              onChange={(e) => setUsdInput(e.target.value)}
-              placeholder="0.00"
-              className="w-full h-20 rounded-3xl bg-card border border-border pl-12 pr-16 text-right num text-4xl font-extrabold focus:outline-none focus:border-accent/60"
-            />
-            <button
-              onClick={() => setUsdInput("")}
-              aria-label="消去"
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full grid place-items-center text-muted-foreground hover:bg-secondary active:scale-95 transition"
-            >
-              <Delete className="w-5 h-5" />
-            </button>
+            <form onSubmit={(e) => { e.preventDefault(); (e.currentTarget.querySelector("input") as HTMLInputElement | null)?.blur(); }}>
+              <span className="absolute left-5 top-1/2 -translate-y-1/2 text-2xl font-bold text-muted-foreground num">$</span>
+              <input
+                inputMode="decimal"
+                type="number"
+                step="0.01"
+                enterKeyHint="done"
+                value={usdInput}
+                onChange={(e) => setUsdInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); (e.target as HTMLInputElement).blur(); } }}
+                placeholder="0.00"
+                className="w-full h-20 rounded-3xl bg-card border border-border pl-12 pr-16 text-right num text-4xl font-extrabold focus:outline-none focus:border-accent/60"
+              />
+              <button
+                type="button"
+                onClick={() => setUsdInput("")}
+                aria-label="消去"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full grid place-items-center text-muted-foreground hover:bg-secondary active:scale-95 transition"
+              >
+                <Delete className="w-5 h-5" />
+              </button>
+            </form>
           </div>
         </section>
 
