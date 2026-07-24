@@ -96,13 +96,6 @@ function SettingsPage() {
           </div>
         </Group>
 
-        <div className="mt-8 rounded-2xl border border-dashed border-border p-4">
-          <div className="text-xs font-semibold mb-1">📱 iPhoneにインストール</div>
-          <p className="text-[11px] text-muted-foreground leading-relaxed">
-            Safariで開く → 共有ボタン → 「ホーム画面に追加」で、アプリのように使えます。
-          </p>
-        </div>
-
         <p className="text-center text-[10px] text-muted-foreground mt-6 tracking-widest uppercase">
           Buy Helper · v1.0
         </p>

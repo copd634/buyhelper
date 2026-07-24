@@ -51,14 +51,15 @@ function BuyHelper() {
 
   return (
     <div className="min-h-screen w-full flex justify-center bg-background">
-      <main className="w-full max-w-[440px] px-4 safe-top pb-32">
+      <main className="w-full max-w-[440px] px-4 safe-top pb-24">
+        
         {/* Header */}
-        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pt-2 pb-4">
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pt-1 pb-4">
           <div className="min-w-0">
             <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Buy Helper
             </div>
-            <h1 className="truncate text-2xl font-bold mt-0.5">仕入判定</h1>
+            <h1 className="truncate text-xl font-bold mt-0.5">仕入判定</h1>
           </div>
           <div className="shrink-0 flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2">
             <span className="text-base leading-none">🇺🇸</span>
@@ -67,14 +68,8 @@ function BuyHelper() {
         </header>
 
         {/* Today's FX */}
-        <section className="rounded-3xl bg-card border border-border p-3.5 mb-5">
-          <div className="flex items-center justify-between mb-2 px-1">
-            <span className="text-xs text-muted-foreground">今日の為替</span>
-            <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-              <RefreshCw className="w-3 h-3" />
-              {timeAgo(new Date(settings.lastRateUpdated).getTime())}更新
-            </span>
-          </div>
+        <section className="mb-5">
+          <Label>為替</Label>
           <div className="grid grid-cols-2 gap-2">
             <RateChip
               icon={<Banknote className="w-4 h-4" />}
@@ -93,7 +88,27 @@ function BuyHelper() {
           </div>
         </section>
 
-        {/* USD input */}
+        {/* Payment & Place */}
+        <section className="mb-5 grid grid-cols-2 gap-2">
+          <SegmentGroup label="支払い">
+            <Segment active={payment === "cash"} onClick={() => setPayment("cash")}>
+              <Banknote className="w-4 h-4" /> 現金
+            </Segment>
+            <Segment active={payment === "card"} onClick={() => setPayment("card")}>
+              <CreditCard className="w-4 h-4" /> カード
+            </Segment>
+          </SegmentGroup>
+          <SegmentGroup label="購入場所">
+            <Segment active={place === "flea"} onClick={() => setPlace("flea")}>
+              <ShoppingBag className="w-4 h-4" /> フリマ
+            </Segment>
+            <Segment active={place === "store"} onClick={() => setPlace("store")}>
+              <Store className="w-4 h-4" /> ストア
+            </Segment>
+          </SegmentGroup>
+        </section>
+
+         {/* USD input */}
         <section className="mb-5">
           <Label>USD価格</Label>
           <div className="relative">
@@ -122,27 +137,7 @@ function BuyHelper() {
           </div>
         </section>
 
-        {/* Payment & Place */}
-        <section className="mb-5 grid grid-cols-2 gap-3">
-          <SegmentGroup label="支払い">
-            <Segment active={payment === "cash"} onClick={() => setPayment("cash")}>
-              <Banknote className="w-4 h-4" /> 現金
-            </Segment>
-            <Segment active={payment === "card"} onClick={() => setPayment("card")}>
-              <CreditCard className="w-4 h-4" /> カード
-            </Segment>
-          </SegmentGroup>
-          <SegmentGroup label="購入場所">
-            <Segment active={place === "flea"} onClick={() => setPlace("flea")}>
-              <ShoppingBag className="w-4 h-4" /> フリマ
-            </Segment>
-            <Segment active={place === "store"} onClick={() => setPlace("store")}>
-              <Store className="w-4 h-4" /> ストア
-            </Segment>
-          </SegmentGroup>
-        </section>
-
-        {/* Big minimum sell price */}
+        {/* Big minimum sell price & Margin stepper */}
         <section className={[
           "rounded-3xl overflow-hidden border-2 mb-5 transition-colors",
           canSave
@@ -156,41 +151,56 @@ function BuyHelper() {
                 ${usd(c.taxedUsd)} · @{fxRate.toFixed(2)}
               </span>
             </div>
+
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-bold text-muted-foreground">¥</span>
               <span className="num text-[64px] leading-none font-extrabold tracking-tighter">
                 {yen(c.requiredSellJpy)}
               </span>
             </div>
-            <div className="mt-3 text-[11px] text-muted-foreground">
-              下代 ¥{yen(c.jpyCost)} ・ {place === "store" ? `ストア (+${settings.storeTaxPct}%)` : "フリマ"} ・ {payment === "cash" ? "現金" : "カード"}
-            </div>
-          </div>
-        </section>
 
-        {/* Margin stepper */}
-        <section className="mb-5 rounded-3xl bg-card border border-border p-5">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-muted-foreground">利益率</span>
-            <span className="text-[10px] text-muted-foreground uppercase tracking-widest">Target margin</span>
-          </div>
-          <div className="grid grid-cols-[56px_minmax(0,1fr)_56px] items-center gap-2">
-            <StepBtn onClick={() => setMarginPct((m) => Math.max(0, m - 5))} aria-label="下げる">
-              <Minus className="w-6 h-6" />
-            </StepBtn>
-            <div className="text-center">
-              <input
-                inputMode="numeric"
-                type="number"
-                value={marginPct}
-                onChange={(e) => setMarginPct(Math.min(99, Math.max(0, Number(e.target.value) || 0)))}
-                className="w-full bg-transparent border-none num text-6xl font-extrabold text-center focus:outline-none"
-              />
-              <div className="text-xs text-muted-foreground -mt-1">%</div>
+            <div className="mt-3 flex items-center gap-2 text-sm">
+              <span className="text-muted-foreground">下代</span>
+              <span className="num font-bold text-foreground">
+                ¥{yen(c.jpyCost)}
+              </span>
+              <span className="text-muted-foreground">
+                ｜ {place === "store" ? `ストア (+${settings.storeTaxPct}%)` : "フリマ"}
+                ・ {payment === "cash" ? "現金" : "カード"}
+              </span>
             </div>
-            <StepBtn onClick={() => setMarginPct((m) => Math.min(99, m + 5))} aria-label="上げる">
-              <Plus className="w-6 h-6" />
-            </StepBtn>
+
+            <div className="flex items-start justify-between mb-2 mt-5 gap-3">
+              <span className="text-xs text-muted-foreground">利益率</span>
+            </div>
+          
+            <div className="mt-5 flex items-center justify-center gap-4">
+              <StepBtn onClick={() => setMarginPct((m) => Math.max(0, m - 5))}>
+                <Minus className="w-5 h-5" />
+              </StepBtn>
+              <div className="flex items-center justify-center">
+                <div className="inline-flex items-baseline justify-center">
+                  <input
+                    inputMode="numeric"
+                    type="number"
+                    value={marginPct}
+                    onChange={(e) =>
+                      setMarginPct(
+                        Math.min(99, Math.max(0, Number(e.target.value) || 0))
+                      )
+                    }
+                    className="w-[2.5ch] bg-transparent border-none num text-5xl font-extrabold text-center focus:outline-none"
+                  />
+                  <span className="text-2xl font-bold">%</span>
+                </div>
+              </div>
+
+              <StepBtn
+                onClick={() => setMarginPct((m) => Math.min(99, m + 5))}
+              >
+                <Plus className="w-5 h-5" />
+              </StepBtn>
+            </div>
           </div>
         </section>
 
@@ -263,7 +273,7 @@ function StepBtn({ children, onClick, ...rest }: React.ButtonHTMLAttributes<HTML
     <button
       onClick={onClick}
       {...rest}
-      className="h-14 w-14 rounded-full bg-secondary border border-border grid place-items-center active:scale-90 transition hover:bg-accent/15"
+      className="h-12 w-12 grid place-items-center active:scale-90 transition"
     >
       {children}
     </button>
