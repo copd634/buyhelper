@@ -159,14 +159,16 @@ function BuyHelper() {
               </span>
             </div>
 
-            <div className="mt-3 flex items-center gap-2 text-sm">
-              <span className="text-muted-foreground">下代</span>
+            <div className="mt-3 flex items-center gap-3 text-[18px]">
+              <span className="text-foreground">下代</span>
               <span className="num font-bold text-foreground">
                 ¥{yen(c.jpyCost)}
               </span>
+            </div>
+            <div className="flex items-center gap-2 text-[11px]">
               <span className="text-muted-foreground">
-                ｜ {place === "store" ? `ストア (+${settings.storeTaxPct}%)` : "フリマ"}
-                ・ {payment === "cash" ? "現金" : "カード"}
+                {place === "store" ? `ストア (+${settings.storeTaxPct}%)` : "フリマ"}
+                ・{payment === "cash" ? "現金" : "カード"}
               </span>
             </div>
 
@@ -174,7 +176,7 @@ function BuyHelper() {
               <span className="text-xs text-muted-foreground">利益率</span>
             </div>
           
-            <div className="mt-5 flex items-center justify-center gap-4">
+            <div className="flex items-center justify-center gap-4">
               <StepBtn onClick={() => setMarginPct((m) => Math.max(0, m - 5))}>
                 <Minus className="w-5 h-5" />
               </StepBtn>
