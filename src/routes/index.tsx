@@ -159,7 +159,7 @@ function BuyHelper() {
               </span>
             </div>
 
-            <div className="mt-3 flex items-center gap-3 text-[18px]">
+            <div className="mt-3 flex items-center gap-3 text-[24px]">
               <span className="text-foreground">下代</span>
               <span className="num font-bold text-foreground">
                 ¥{yen(c.jpyCost)}
