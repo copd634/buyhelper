@@ -147,8 +147,8 @@ function BuyHelper() {
           <div className="p-5">
             <div className="flex items-start justify-between mb-2 gap-3">
               <span className="text-xs text-muted-foreground">最低販売価格</span>
-              <span className="text-[11px] num text-muted-foreground text-right shrink-0">
-                ${usd(c.taxedUsd)} · @{fxRate.toFixed(2)}
+              <span className="text-[18px] num text-muted-foreground text-right shrink-0">
+                ${usd(c.taxedUsd)}
               </span>
             </div>
 
@@ -159,7 +159,7 @@ function BuyHelper() {
               </span>
             </div>
 
-            <div className="mt-3 flex items-center gap-3 text-[24px]">
+            <div className="mt-3 flex items-center gap-3 text-[18px]">
               <span className="text-foreground">下代</span>
               <span className="num font-bold text-foreground">
                 ¥{yen(c.jpyCost)}
